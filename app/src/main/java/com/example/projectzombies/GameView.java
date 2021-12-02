@@ -1,6 +1,10 @@
 package com.example.projectzombies;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -10,6 +14,8 @@ import androidx.annotation.NonNull;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainGameThread thread;
 
+    private TestZombie testZombie;
+
     public GameView(Context context) {
         super(context);
 
@@ -17,10 +23,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         thread = new MainGameThread(getHolder(), this);
         setFocusable(true);
+
+
+        testZombie = new TestZombie(BitmapFactory.decodeResource(getResources(),R.drawable.zombie0));
+
+
     }
 
     public void update() {
+        testZombie.update();
+    }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        if (canvas != null) {
+            canvas.drawColor(Color.GRAY);
+
+            /*
+            Paint paint = new Paint();
+            paint.setColor(Color.rgb(250, 0, 0));
+            canvas.drawRect(100, 100, 400, 200, paint);
+             */
+
+
+            testZombie.draw(canvas);
+
+        }
     }
 
     @Override
