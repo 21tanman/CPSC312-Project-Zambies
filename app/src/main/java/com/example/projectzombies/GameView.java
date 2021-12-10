@@ -1,10 +1,12 @@
 package com.example.projectzombies;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -14,7 +16,17 @@ import androidx.annotation.NonNull;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainGameThread thread;
 
-    private TestZombie testZombie;
+    private NormalZombie testZombie;
+
+    public static final String TAG = "MYTAG";
+
+
+    public static final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    public static final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+
+    private TouchHandler touchHandler;
+
 
     public GameView(Context context) {
         super(context);
@@ -24,14 +36,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainGameThread(getHolder(), this);
         setFocusable(true);
 
+        testZombie = new NormalZombie(1080,400,getResources());
 
-        testZombie = new TestZombie(BitmapFactory.decodeResource(getResources(),R.drawable.zombie0));
+
+        touchHandler = new TouchHandler(getResources(),context);
+
+        this.setOnTouchListener(touchHandler);
 
 
     }
 
     public void update() {
         testZombie.update();
+
     }
 
     @Override
@@ -48,6 +65,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
             testZombie.draw(canvas);
+
+            touchHandler.draw(canvas);
 
         }
     }
