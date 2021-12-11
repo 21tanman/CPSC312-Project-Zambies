@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory;
 
 public class NormalZombie extends Zombie {
 
-    public NormalZombie(int x, int y, Resources resources) {
-        super(x, y);
-        life = 100;
+    public NormalZombie(double x, double y, Resources resources, double lifeMult, GameView view) {
+
+        super(x, y, view);
+        fullLife = (int)(100*lifeMult);
+        life = fullLife;
         xVeloc = -2;
         image = BitmapFactory.decodeResource(resources,R.drawable.zombie1);
         image = Bitmap.createScaledBitmap(image,150,150,true);

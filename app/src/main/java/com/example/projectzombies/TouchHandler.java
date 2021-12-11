@@ -20,17 +20,38 @@ public class TouchHandler implements View.OnTouchListener{
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     protected Bitmap regTower;
+    protected Bitmap regBarTower;
 
-    private Context context;
+
+    private final int regTowerPositionX = 0;
+    private final int regTowerPositionY= 0;
+
+    private GameView gameView;
+
+    private boolean dragging = false;
+
+    private int draggedTowerType = -1;
+
+
+    private int draggableX;
+    private int draggableY;
+
+
+    private final int BAR_TOWER_SIZE = 200;
+    public static final int TOWER_SIZE = 150;
+
 
     Paint barColor;
-    public TouchHandler(Resources resources, Context context) {
+    public TouchHandler(Resources resources, GameView gameView) {
 
 
+        this.gameView = gameView;
+
+        regBarTower = BitmapFactory.decodeResource(resources,R.drawable.tower0);
+        regBarTower = Bitmap.createScaledBitmap(regBarTower,BAR_TOWER_SIZE,BAR_TOWER_SIZE,true);
 
         regTower = BitmapFactory.decodeResource(resources,R.drawable.tower0);
-        regTower = Bitmap.createScaledBitmap(regTower,200,200,true);
-
+        regTower = Bitmap.createScaledBitmap(regTower,TOWER_SIZE,TOWER_SIZE,true);
 
 
         barColor = new Paint();
@@ -41,7 +62,7 @@ public class TouchHandler implements View.OnTouchListener{
 
         canvas.drawRect(0, 0, 210, screenHeight, barColor);
 
-        canvas.drawBitmap(regTower, 0, 0, null);
+        canvas.drawBitmap(regBarTower, regTowerPositionX, regTowerPositionY, null);
 
     }
 
@@ -49,29 +70,76 @@ public class TouchHandler implements View.OnTouchListener{
     public void draw(Canvas canvas) {
 
         drawBar(canvas);
+
+        drawDraggable(canvas);
+    }
+
+
+    private boolean pointOnBar(int x, int y) {
+        if (Collider.pointWithImage(x,y,regBarTower,regTowerPositionX,regTowerPositionY)) {
+            draggedTowerType = 0;
+            return true;
+        }
+
+
+        return false;
+    }
+
+    private void drawDraggable(Canvas canvas) {
+
+        if (draggedTowerType == 0) {
+            canvas.drawBitmap(regTower, draggableX, draggableY, null);
+        }
+
+
+    }
+
+    private void updateDraggable(int x, int y) {
+        int imageSize = 0;
+        if (draggedTowerType == 0) {
+            imageSize = regTower.getWidth();
+        }
+
+        draggableX = x - imageSize/2;
+        draggableY = y - imageSize/2;
+
     }
 
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+
+        view.performClick();
+
         int x = (int)event.getX();
         int y = (int)event.getY();
 
-        Log.d(GameView.TAG,"event action: " + event.getAction());
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Log.d(GameView.TAG, "touched down");
-                break;
+                if (pointOnBar(x,y)) {
+                    dragging = true;
+                    updateDraggable(x,y);
+                }
+                return true;
             case MotionEvent.ACTION_MOVE:
-                Toast.makeText(context, "Moving..",Toast.LENGTH_SHORT).show();
+                if (dragging) {
+                    updateDraggable(x,y);
+                }
                 break;
             case MotionEvent.ACTION_UP:
-                Toast.makeText(context, "TouchUp",Toast.LENGTH_SHORT).show();
+                if (dragging) {
+                    gameView.getTowerPlacement(draggedTowerType, draggableX, draggableY);
+                    draggedTowerType = -1;
+                    dragging = false;
+                }
                 break;
         }
         return false;
     }
+
+
+
 
 
 

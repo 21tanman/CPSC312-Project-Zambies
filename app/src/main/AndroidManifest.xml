@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectZombies">
         <activity
-            android:name=".MainActivity"
+            android:name=".GameActivity"
             android:screenOrientation="sensorLandscape"
             android:exported="true">
             <intent-filter>
