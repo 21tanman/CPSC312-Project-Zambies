@@ -38,7 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private List<Bullet> bulletsToDestroy;
     private List<Zombie> zombiesToDestroy;
     private List<Explosion> explosionsToDestroy;
-
+    private List<Tower> towersToDestroy;
 
     private final int FULL_SPAWN_TIMER = 200;
     private int spawner = FULL_SPAWN_TIMER;
@@ -77,8 +77,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         bulletsToDestroy = new ArrayList<>();
         zombiesToDestroy = new ArrayList<>();
         explosionsToDestroy = new ArrayList<>();
+        towersToDestroy = new ArrayList<>();
     }
 
+    private void checkEnd() {
+        if (getFirstZombie().getX() < 0) {
+
+        }
+    }
     private void spawnZombies() {
         totalTimer++;
         spawner--;
@@ -92,6 +98,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
         spawner = (int)((double)FULL_SPAWN_TIMER / mult);
+
+        mult /= 1.25;
 
         if (totalTimer < 1000*2) {
             spawnZombie(0,1);
@@ -137,6 +145,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (randy == 5) {
                 spawnZombie(2,mult);
             }
+            totalTimer += 100;
 
         }
 
@@ -186,6 +195,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             explosionsToDestroy.remove(i);
         }
     }
+
+    public void destroyTower(Tower t) {
+        towersToDestroy.add(t);
+        t.setY(-1000);
+    }
+    private void destroyTowers() {
+        if (towersToDestroy.size() == 0) {
+            return;
+        }
+        for (int i = towersToDestroy.size()-1; i > -1; i -= 1) {
+            towers.remove(towersToDestroy.get(i));
+            towersToDestroy.remove(i);
+        }
+    }
+
+
+
 
     public int getMoney() {
         return money;
@@ -298,8 +324,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         destroyBullets();
         destroyZombies();
         destroyExplosions();
-
+        destroyTowers();
         spawnZombies();
+
+        checkEnd();
 
 
     }
