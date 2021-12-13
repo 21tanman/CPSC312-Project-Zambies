@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 public class TouchHandler implements View.OnTouchListener{
 
-    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int screenWidth = 1997;
+    private int screenHeight = 1080;
 
     protected Bitmap regTower;
     protected Bitmap regBarTower;
@@ -110,10 +110,10 @@ public class TouchHandler implements View.OnTouchListener{
         canvas.drawText("$50", spikeTowerPositionX, spikeTowerPositionY + 200, textPaint);
 
         if (warningTime <= 0) {
-            canvas.drawText("Money: $" + gameView.getMoney(), screenWidth*2/3,  100, textPaint);
+            canvas.drawText("Money: $" + gameView.getMoney(), screenWidth/2,  100, textPaint);
         }
         else {
-            canvas.drawText("Not enough money!", screenWidth*2/3,  100, textPaint);
+            canvas.drawText("Not enough money!", screenWidth/2,  100, textPaint);
         }
 
 

@@ -7,7 +7,11 @@ import android.graphics.BitmapFactory;
 public class NormalTower extends Tower {
     public NormalTower(double x, double y, Resources resources, GameView view) {
         super(x, y, view);
-        life = 100;
+
+        fullLife = 200;
+        life = fullLife;
+
+
         image = BitmapFactory.decodeResource(resources,R.drawable.tower0);
         image = Bitmap.createScaledBitmap(image,TouchHandler.TOWER_SIZE,TouchHandler.TOWER_SIZE,true);
         bulletSpeed = 30;

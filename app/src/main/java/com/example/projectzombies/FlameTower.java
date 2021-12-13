@@ -7,7 +7,8 @@ import android.graphics.BitmapFactory;
 public class FlameTower extends Tower {
     public FlameTower(double x, double y, Resources resources, GameView view) {
         super(x, y, view);
-        life = 100;
+        fullLife = 200;
+        life = fullLife;
         image = BitmapFactory.decodeResource(resources,R.drawable.tower1);
         image = Bitmap.createScaledBitmap(image,TouchHandler.TOWER_SIZE,TouchHandler.TOWER_SIZE,true);
         bulletSpeed = 30;

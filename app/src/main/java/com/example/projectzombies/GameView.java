@@ -39,6 +39,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private List<Zombie> zombiesToDestroy;
     private List<Explosion> explosionsToDestroy;
 
+
+    private final int FULL_SPAWN_TIMER = 200;
+    private int spawner = FULL_SPAWN_TIMER;
+    private int totalTimer = 0;
+
+
     private int money;
 
     public GameView(Context context) {
@@ -50,7 +56,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
 
 
-        money = 150;
+        money = 200;
 
         touchHandler = new TouchHandler(getResources(),this);
 
@@ -59,9 +65,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         this.setOnTouchListener(touchHandler);
         initializeStuff();
-
-        spawnZombie();
-
 
 
     }
@@ -74,8 +77,74 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         bulletsToDestroy = new ArrayList<>();
         zombiesToDestroy = new ArrayList<>();
         explosionsToDestroy = new ArrayList<>();
+    }
+
+    private void spawnZombies() {
+        totalTimer++;
+        spawner--;
+
+        if (spawner > 0) {return;}
+
+        int randy = new Random().nextInt(6);
+
+
+        double mult = (double)totalTimer/10000 + 1;
+
+
+        spawner = (int)((double)FULL_SPAWN_TIMER / mult);
+
+        if (totalTimer < 1000*2) {
+            spawnZombie(0,1);
+
+        }
+        else if (totalTimer < 1000*5) {
+            if (randy == 0) {
+                spawnZombie(0,mult);
+            }
+            if (randy == 1) {
+                spawnZombie(0,mult);
+            }
+            if (randy == 2) {
+                spawnZombie(0,mult);
+            }
+            if (randy == 3) {
+                spawnZombie(0,mult);
+            }
+            if (randy == 4) {
+                spawnZombie(1,mult);
+            }
+            if (randy == 5) {
+                spawnZombie(1,mult);
+            }
+
+        }
+        else {
+            if (randy == 0) {
+                spawnZombie(0,mult);
+            }
+            if (randy == 1) {
+                spawnZombie(0,mult);
+            }
+            if (randy == 2) {
+                spawnZombie(0,mult);
+            }
+            if (randy == 3) {
+                spawnZombie(1,mult);
+            }
+            if (randy == 4) {
+                spawnZombie(1,mult);
+            }
+            if (randy == 5) {
+                spawnZombie(2,mult);
+            }
+
+        }
+
+
+
 
     }
+
 
     public void destroyBullet(Bullet b) {
         bulletsToDestroy.add(b);
@@ -167,6 +236,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
 
+
+
     public void addBullet(double bulletType, double x, double y, double xVeloc, double yVeloc) {
         Bullet newBullet = null;
         if (bulletType == 0) {
@@ -189,11 +260,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-    private void spawnZombie() {
+    private void spawnZombie(int type, double lifeMult) {
         int spawnRangeY = new Random().nextInt(screenHeight - 200);
-        int spawnRangeX = screenWidth + 200;
+        int spawnRangeX = screenWidth + 400;
 
-        Zombie newZombie = new NormalZombie(spawnRangeX,spawnRangeY,getResources(),1, this);
+        Zombie newZombie = null;
+        if (type == 0) {
+            newZombie = new NormalZombie(spawnRangeX,spawnRangeY,getResources(),lifeMult, this);
+        }
+        if (type == 1) {
+            newZombie = new FastZombie(spawnRangeX,spawnRangeY,getResources(),lifeMult, this);
+        }
+        if (type == 2) {
+            newZombie = new GiantZombie(spawnRangeX,spawnRangeY,getResources(),lifeMult, this);
+        }
 
         zombies.add(newZombie);
     }
@@ -218,6 +298,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         destroyBullets();
         destroyZombies();
         destroyExplosions();
+
+        spawnZombies();
+
 
     }
 

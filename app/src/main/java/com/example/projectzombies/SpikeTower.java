@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory;
 public class SpikeTower extends Tower {
     public SpikeTower(double x, double y, Resources resources, GameView view) {
         super(x, y, view);
-        life = 100;
+        fullLife = 2000;
+        life = fullLife;
+
         image = BitmapFactory.decodeResource(resources,R.drawable.tower2);
         image = Bitmap.createScaledBitmap(image,200,200,true);
         bulletSpeed = 30;

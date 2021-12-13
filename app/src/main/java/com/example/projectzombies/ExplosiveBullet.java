@@ -12,7 +12,7 @@ public class ExplosiveBullet extends Bullet {
         image = Bitmap.createScaledBitmap(image,20,20,true);
         damage = 0;
     }
-
+    
     @Override
     protected void die() {
         view.addExplosion((float)x,(float)y);
