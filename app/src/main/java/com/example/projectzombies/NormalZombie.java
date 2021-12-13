@@ -14,6 +14,7 @@ public class NormalZombie extends Zombie {
         xVeloc = -2;
         image = BitmapFactory.decodeResource(resources,R.drawable.zombie1);
         image = Bitmap.createScaledBitmap(image,150,150,true);
+        moneyValue = 20;
 
     }
 

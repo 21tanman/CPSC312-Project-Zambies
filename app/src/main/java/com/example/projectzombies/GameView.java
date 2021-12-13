@@ -22,7 +22,6 @@ import java.util.Random;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainGameThread thread;
 
-
     public static final String TAG = "MYTAG";
     public static final int screenHeight = 1080;
     public static final int screenWidth = 1977;
@@ -34,9 +33,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public List<Zombie> zombies;
     private List<Bullet> bullets;
 
+    private List<Explosion> explosions;
+
     private List<Bullet> bulletsToDestroy;
     private List<Zombie> zombiesToDestroy;
+    private List<Explosion> explosionsToDestroy;
 
+    private int money;
 
     public GameView(Context context) {
         super(context);
@@ -47,8 +50,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
 
 
+        money = 150;
 
         touchHandler = new TouchHandler(getResources(),this);
+
 
 
 
@@ -64,8 +69,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         towers = new ArrayList<>();
         zombies = new ArrayList<>();
         bullets = new ArrayList<>();
+        explosions = new ArrayList<>();
+
         bulletsToDestroy = new ArrayList<>();
         zombiesToDestroy = new ArrayList<>();
+        explosionsToDestroy = new ArrayList<>();
+
     }
 
     public void destroyBullet(Bullet b) {
@@ -95,12 +104,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             zombiesToDestroy.remove(i);
         }
     }
+    public void destroyExplosion(Explosion e) {
+        explosionsToDestroy.add(e);
+        e.setY(-1000);
+    }
+    private void destroyExplosions() {
+        if (explosionsToDestroy.size() == 0) {
+            return;
+        }
+        for (int i = explosionsToDestroy.size()-1; i > -1; i -= 1) {
+            explosions.remove(explosionsToDestroy.get(i));
+            explosionsToDestroy.remove(i);
+        }
+    }
 
-
-
-
+    public int getMoney() {
+        return money;
+    }
 
     public void getTowerPlacement(int towerType, int x, int y) {
+
         if (x < 0 || x > screenWidth)  {
             return;
         }
@@ -108,20 +131,60 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             return;
         }
 
+        int moneyAmount = 0;
+
+
         Tower newTower = null;
         if (towerType == 0) {
+            moneyAmount = 100;
             newTower = new NormalTower(x,y,getResources(), this);
         }
+        if (towerType == 1) {
+            moneyAmount = 150;
+            newTower = new FlameTower(x,y,getResources(), this);
+        }
+        if (towerType == 2) {
+            moneyAmount = 50;
+            newTower = new SpikeTower(x,y,getResources(), this);
+        }
+
+        if (moneyAmount > money) {
+            touchHandler.notEnoughMoney();
+            return;
+        }
+        else {
+            money -= moneyAmount;
+        }
+
         towers.add(newTower);
 
     }
+
+
+    public void addMoney(int money) {
+        this.money += money;
+    }
+
+
+
     public void addBullet(double bulletType, double x, double y, double xVeloc, double yVeloc) {
         Bullet newBullet = null;
         if (bulletType == 0) {
             newBullet = new NormalBullet(x, y, xVeloc, yVeloc, getResources(), this) {
             };
         }
+        if (bulletType == 1) {
+            newBullet = new ExplosiveBullet(x, y, xVeloc, yVeloc, getResources(), this) {
+            };
+        }
         bullets.add(newBullet);
+
+    }
+    public void addExplosion(float x, float y) {
+
+        Explosion explosion = new Explosion(x,y,this);
+
+        explosions.add(explosion);
 
     }
 
@@ -137,6 +200,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public void update() {
+
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).update();
         }
@@ -146,12 +210,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).update();
         }
+        for (int i = 0; i < explosions.size(); i++) {
+            explosions.get(i).update();
+        }
 
 
         destroyBullets();
         destroyZombies();
+        destroyExplosions();
 
     }
+
 
     public Zombie getFirstZombie() {
         Zombie firstZombie = null;
@@ -169,6 +238,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
+
+
+
             canvas.drawColor(Color.GRAY);
 
             for (int i = 0; i < towers.size(); i++) {
@@ -180,6 +252,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
             for (int i = 0; i < bullets.size(); i++) {
                 bullets.get(i).draw(canvas);
+            }
+            for (int i = 0; i < explosions.size(); i++) {
+                explosions.get(i).draw(canvas);
             }
 
             touchHandler.draw(canvas);

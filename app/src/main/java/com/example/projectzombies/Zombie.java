@@ -21,6 +21,12 @@ public abstract class Zombie {
 
     protected GameView view;
 
+    protected int fullSlowedTimer = 10;
+    protected int slowedTimer = 0;
+
+    protected int moneyValue;
+
+
     Paint barColor;
 
     public Zombie(double x, double y, GameView view) {
@@ -37,9 +43,11 @@ public abstract class Zombie {
         if (life <= 0) {
             die();
         }
+        slowedTimer--;
     }
 
     private void die() {
+        view.addMoney(moneyValue);
         view.destroyZombie(this);
     }
 
@@ -88,8 +96,20 @@ public abstract class Zombie {
         this.y += y;
     }
     public void updatePositionBySpeed() {
-        x += xVeloc;
-        y += yVeloc;
+
+        if (slowedTimer > 0) {
+            x += xVeloc/2;
+            y += yVeloc/2;
+        }
+        else {
+            x += xVeloc;
+            y += yVeloc;
+        }
+
+    }
+
+    public void getSlowed() {
+        slowedTimer = fullSlowedTimer;
     }
 
 }
