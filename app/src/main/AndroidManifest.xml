@@ -8,9 +8,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+        android:theme="@style/AppFullScreenTheme">
         <activity
-            android:name=".GameActivity"
+            android:name=".StartScreen"
             android:screenOrientation="sensorLandscape"
             android:exported="true">
             <intent-filter>
@@ -18,6 +18,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".EndScreen"
+            android:exported="true"
+            android:screenOrientation="sensorLandscape">
+
+        </activity>
+        <activity
+            android:name=".GameActivity"
+            android:exported="true"
+            android:screenOrientation="sensorLandscape">
+
         </activity>
     </application>
 

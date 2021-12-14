@@ -1,6 +1,7 @@
 package com.example.projectzombies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,11 +45,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int spawner = FULL_SPAWN_TIMER;
     private int totalTimer = 0;
 
+    private GameActivity enclosingActivity;
 
     private int money;
 
-    public GameView(Context context) {
+    private boolean dead = false;
+
+
+    public GameView(Context context, GameActivity enclosingActivity) {
         super(context);
+
+        this.enclosingActivity = enclosingActivity;
 
         getHolder().addCallback(this);
 
@@ -81,9 +88,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void checkEnd() {
-        if (getFirstZombie().getX() < 0) {
-
+        if (getFirstZombie().getX() < 0 && !dead) {
+            dead = true;
+            enclosingActivity.die();
         }
+
     }
     private void spawnZombies() {
         totalTimer++;

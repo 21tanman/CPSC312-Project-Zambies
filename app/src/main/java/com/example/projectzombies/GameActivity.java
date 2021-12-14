@@ -3,6 +3,7 @@ package com.example.projectzombies;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Window;
@@ -15,7 +16,7 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
 
 
-        setContentView(new GameView(this));
+        setContentView(new GameView(this, this));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -23,4 +24,11 @@ public class GameActivity extends Activity {
 
 
     }
+
+
+    public void die() {
+        Intent intent = new Intent(this, EndScreen.class);
+        startActivity(intent);
+    }
+
 }
