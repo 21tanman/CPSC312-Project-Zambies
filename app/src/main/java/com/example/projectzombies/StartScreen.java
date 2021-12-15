@@ -16,7 +16,8 @@ public class StartScreen extends AppCompatActivity {
         final Button button = findViewById(R.id.playBtn);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GameActivity newGame = new GameActivity();
+
+            new GameActivity();
             }
         });
     }

@@ -20,7 +20,7 @@ public class EndScreen extends AppCompatActivity {
         final Button button = (Button) findViewById(R.id.playAgainBtn);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // your handler code here
+                //code here new GameActivity
             }
         });
     }
