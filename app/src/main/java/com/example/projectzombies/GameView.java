@@ -51,6 +51,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private boolean dead = false;
 
+    private int score = 0;
+
 
     public GameView(Context context, GameActivity enclosingActivity) {
         super(context);
@@ -90,7 +92,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private void checkEnd() {
         if (getFirstZombie().getX() < 0 && !dead) {
             dead = true;
-            enclosingActivity.die();
+            enclosingActivity.die(score);
         }
 
     }
@@ -180,6 +182,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void destroyZombie(Zombie z) {
         zombiesToDestroy.add(z);
+        score += 10;
         z.setY(-1000);
     }
     private void destroyZombies() {
