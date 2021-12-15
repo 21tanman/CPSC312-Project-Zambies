@@ -26,8 +26,9 @@ public class GameActivity extends Activity {
     }
 
 
-    public void die() {
+    public void die(int score) {
         Intent intent = new Intent(this, EndScreen.class);
+        intent.putExtra("Score", score);
         startActivity(intent);
     }
 
