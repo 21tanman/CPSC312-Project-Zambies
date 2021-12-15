@@ -41,7 +41,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private List<Explosion> explosionsToDestroy;
     private List<Tower> towersToDestroy;
 
-    private final int FULL_SPAWN_TIMER = 200;
+    private final int FULL_SPAWN_TIMER = 300;
     private int spawner = FULL_SPAWN_TIMER;
     private int totalTimer = 0;
 
