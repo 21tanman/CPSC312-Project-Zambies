@@ -12,10 +12,10 @@
         android:id="@+id/playAgainBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="230dp"
-        android:layout_marginTop="157dp"
-        android:layout_marginEnd="231dp"
-        android:layout_marginBottom="157dp"
+        android:layout_marginStart="207dp"
+        android:layout_marginTop="239dp"
+        android:layout_marginEnd="208dp"
+        android:layout_marginBottom="75dp"
         android:backgroundTint="#222222"
         android:padding="40px"
         android:text="Play Again"
@@ -26,5 +26,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="207dp"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="315dp"
+        android:layout_marginBottom="48dp"
+        android:text=" Kills: "
+        android:textSize="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/playAgainBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
